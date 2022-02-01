@@ -8,7 +8,7 @@
 
 # Goals
 
-# Non-Hoals 
+# Non-Goals 
 
 # Telemetry 
 
