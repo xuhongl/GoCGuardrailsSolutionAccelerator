@@ -1,0 +1,13 @@
+{
+  "keyVaultName": "guardrailstest-kv",
+  "resourcegroup": "Guardrailtest",
+  "region": "CanadaCentral",
+  "storageaccountName": "guardrailtest",
+  "logAnalyticsworkspaceName": "guardrailstest-LAW",
+  "autoMationAccountName": "guardrailstest-AC",
+  "spnName": "guardrailtestread.domain.com",
+  "bga1": "user1@domain.com",
+  "bga2": "user2@domain.com",
+  "FirstBreakGlassUPN": "user1@domain.com",
+  "SecondBreakGlassUPN": "user2@domain.com"
+}
