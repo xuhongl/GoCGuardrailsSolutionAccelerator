@@ -49,7 +49,15 @@ if ($storageaccountName.Length -gt 24 -or $storageaccountName.Length -lt 3)
     break
 }
 #endregion
-
+#region keyvault verification
+$kvContent=((Invoke-AzRest -Uri "https://management.azure.com/subscriptions/$((Get-AzContext).Subscription.Id)/providers/Microsoft.KeyVault/checkNameAvailability?api-version=2021-11-01-preview" `
+-Method Post -Payload "{""name"": ""$keyVaultName"",""type"": ""Microsoft.KeyVault/vaults""}").Content | ConvertFrom-Json).NameAvailable
+if (!($kvContent))
+{
+    write-output "Error: keyvault name $keyVaultName is not available."
+    break
+}
+#endregion
 #before deploying anything, check if current user can be found.
 Write-Verbose "Adding current user as a Keyvault administrator (for setup)."
 if ($userId -eq "")
