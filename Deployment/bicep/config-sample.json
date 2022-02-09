@@ -1,6 +1,6 @@
 {
-  "keyVaultName": "guardrailstest-kv",
-  "resourcegroup": "Guardrailtest",
+  "keyVaultName": "guardrail0209-kv",
+  "resourcegroup": "Guardrails",
   "region": "CanadaCentral",
   "storageaccountName": "guardrailtest",
   "logAnalyticsworkspaceName": "guardrailstest-LAW",
