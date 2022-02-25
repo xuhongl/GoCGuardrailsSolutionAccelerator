@@ -6,9 +6,9 @@ Navigate to shell.azure.com and authenticate as a user that has Azure and Azure 
 
 Clone repository
 
-` git clone <URL TBD>`
+`git clone https://github.com/igomaa/GoCGuardrailsSolutionAccelerator.git`
 
-cd to `.\Guardrailssolutionaccelerator\Deployment\bicep`
+cd to `.\Guardrailssolutionaccelerator`
 
 Edit config.json with `code .\config.json' and adjust parameters as required.
 
