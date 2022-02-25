@@ -1,13 +1,11 @@
 {
-  "keyVaultName": "guardrail0209-kv",
-  "resourcegroup": "Guardrails",
+  "keyVaultName": "guardrailstest-kv",
+  "resourcegroup": "Guardrailtest",
   "region": "CanadaCentral",
   "storageaccountName": "guardrailtest",
   "logAnalyticsworkspaceName": "guardrailstest-LAW",
   "autoMationAccountName": "guardrailstest-AC",
-  "spnName": "guardrailtestread.domain.com",
   "bga1": "user1@domain.com",
   "bga2": "user2@domain.com",
-  "FirstBreakGlassUPN": "user1@domain.com",
-  "SecondBreakGlassUPN": "user2@domain.com"
+  "PBMMPolicyID":"4c4a5f27-de81-430b-b4e5-9cbd50595a87"
 }

@@ -9,7 +9,10 @@ function copy-toBlob  {
         $storageaccountName,
         [Parameter(Mandatory=$true)]
         [string]
-        $resourcegroup
+        $resourcegroup,
+        [Parameter(Mandatory=$false)]
+        [switch]
+        $force
     )
     $psModulesContainerName="psmodules"
     try {
@@ -17,16 +20,16 @@ function copy-toBlob  {
             ResourceGroupName = $resourcegroup
             Name = $storageaccountName
         }
-
         $scParams = @{
             Container = $psModulesContainerName
         }
-
         $bcParams = @{
             File = $FilePath
             Blob = ($FilePath | Split-Path -Leaf)
         }
-        Get-AzStorageAccount @saParams | Get-AzStorageContainer @scParams | Set-AzStorageBlobContent @bcParams
+        if ($force)
+        {Get-AzStorageAccount @saParams | Get-AzStorageContainer @scParams | Set-AzStorageBlobContent @bcParams -Force}
+        else {Get-AzStorageAccount @saParams | Get-AzStorageContainer @scParams | Set-AzStorageBlobContent @bcParams}
     }
     catch
     {
