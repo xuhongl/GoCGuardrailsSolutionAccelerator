@@ -47,7 +47,7 @@ $PBMMPolicyID=$config.PBMMPolicyID
 
 #Other Variables
 $mainRunbookName="main"
-$mainRunbookPath='..\..\GUARDRAIL COMMON\'
+$mainRunbookPath='.\'
 $mainRunbookDescription="Guardrails Main Runbook"
 
 #Tests if logged in:
