@@ -401,6 +401,24 @@ resource module14 'modules' ={
       }
     }
   }
+  resource module15 'modules' ={
+    name: 'Check-AllowedLocationPolicy'
+    properties: {
+      contentLink: {
+        uri: 'https://guardrail.blob.core.windows.net/psmodules/Check-AllowedLocationPolicy.zip'
+        version: '1.0.0'
+      }
+    }
+  }
+  resource module16 'modules' ={
+    name: 'Check-PrivateMarketPlace.zip'
+    properties: {
+      contentLink: {
+        uri: 'https://guardrail.blob.core.windows.net/psmodules/Check-PrivateMarketPlace.zip.zip'
+        version: '1.0.0'
+      }
+    }
+  }
   
   resource variable1 'variables' = {
     name: 'KeyvaultName'

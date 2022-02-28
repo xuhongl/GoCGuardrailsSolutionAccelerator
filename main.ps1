@@ -86,9 +86,15 @@ Check-MonitorAccountCreation -Token $GraphAccessToken -DepartmentNumner "56" -Co
     -LogType $LogType -WorkSpaceID $WorkSpaceID -WorkspaceKey $WorkspaceKey
 "Verify-PBMMPolicy"
 Verify-PBMMPolicy -ControlName $CtrName5  -ItemName "PBMMPolicy Compliance" -PolicyID $PBMMPolicyID -LogType $LogType -WorkSpaceID $WorkSpaceID -WorkspaceKey $WorkspaceKey
+"Verify-AllowedLocationPolicy"
+Verify-AllowedLocationPolicy -ControlName $CtrName5 -ItemName "AllowedLocationPolicy" -PolicyID $AllowedLocationPolicyId -LogType $LogType -WorkSpaceID $workspaceKey -workspaceKey $workspaceKey
 #Guardrail module 8
 "Get-SubnetComplianceInformation" 
 Get-SubnetComplianceInformation -ControlName $CtrName8 -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey
 #Guardrail module 9
 "Get-VnetComplianceInformation"
 Get-VnetComplianceInformation -ControlName $CtrName9 -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey 
+#Guardrail module 12 
+"Check-PrivateMarketPlaceCreaion"
+Check-PrivateMarketPlaceCreaion -ContainerName $Ctrname12  -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey -LogType $LogType
+#Confirm-CloudConsoleAccess -token $token.access_token -PolicyName 

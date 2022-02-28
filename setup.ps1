@@ -47,7 +47,7 @@ $PBMMPolicyID=$config.PBMMPolicyID
 
 #Other Variables
 $mainRunbookName="main"
-$mainRunbookPath='.\'
+$mainRunbookPath='..\..\GUARDRAIL COMMON\'
 $mainRunbookDescription="Guardrails Main Runbook"
 
 #Tests if logged in:
@@ -65,6 +65,7 @@ if ($subs.count -gt 1)
     $subs | ForEach-Object {Write-output "$i - $($_.Name) - $($_.SubscriptionId)";$i++}
     [int]$selection=Read-Host "Select Subscription number: (1 - $($i-1))"
 }
+else { $selection=0}
 if ($selection -ne 0)
 {
     if ($selection -gt 0 -and $selection -le ($i-1))  { 
