@@ -266,6 +266,24 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
       }
     }
   }
+  resource module18 'modules' ={
+    name: 'Az.Accounts'
+    properties: {
+      contentLink: {
+        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.accounts.2.7.2.nupkg'
+        version: '0.3.0'
+      }
+    }
+  }
+  resource module17 'modules' ={
+    name: 'az.marketplace'
+    properties: {
+      contentLink: {
+        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.marketplace.0.3.0.nupkg'
+        version: '0.3.0'
+      }
+    }
+  }
   resource AzureGraph 'modules' ={
     name: 'AzureGraph'
     properties: {
@@ -411,15 +429,16 @@ resource module14 'modules' ={
     }
   }
   resource module16 'modules' ={
-    name: 'Check-PrivateMarketPlace.zip'
+    name: 'Check-PrivateMarketPlace'
     properties: {
       contentLink: {
-        uri: 'https://guardrail.blob.core.windows.net/psmodules/Check-PrivateMarketPlace.zip.zip'
+        uri: 'https://guardrail.blob.core.windows.net/psmodules/Check-PrivateMarketPlace.zip'
         version: '1.0.0'
       }
     }
   }
-  
+
+
   resource variable1 'variables' = {
     name: 'KeyvaultName'
     properties: {

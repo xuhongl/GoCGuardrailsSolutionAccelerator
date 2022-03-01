@@ -6,9 +6,9 @@ Navigate to shell.azure.com and authenticate as a user that has Azure and Azure 
 
 Clone repository
 
-` git clone <URL TBD>`
+`git clone https://github.com/igomaa/GoCGuardrailsSolutionAccelerator.git`
 
-cd to `.\Guardrailssolutionaccelerator\Deployment\bicep`
+cd to `.\GocGuardrailssolutionaccelerator`
 
 Edit config.json with `code .\config.json' and adjust parameters as required.
 
@@ -17,6 +17,8 @@ Save the file and exit VSCode.
 ## Deployment
 
 If the deployment is being done using the Azure Cloud Shell, the currentuserUPN parameter below refers to the user logged in. This is required when using the cloud shell.
+
+In a B2B scenario, please use the full user name, typically something like `user_inviteddomain#EXT@invitingDomain.com`
 
 The solution will deploy new resources.
 
@@ -33,9 +35,3 @@ Alternatively, these parameters can be used to leverage existing KeyVault and Lo
 `$existingWorkSpaceRG`: the resource group containing the Log Analytics Workspace above.
 
 `$skipDeployment`: the setup script will run everything but the Azure Resources deployment (for debug/testing only)
-
-## How it works
-
-### Module 8
-
-### Module 9
