@@ -276,7 +276,7 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
     }
   }
   resource module17 'modules' ={
-    name: 'az.marketplace'
+    name: 'Az.Marketplace'
     properties: {
       contentLink: {
         uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.marketplace.0.3.0.nupkg'

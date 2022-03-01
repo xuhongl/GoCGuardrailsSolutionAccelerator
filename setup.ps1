@@ -163,7 +163,8 @@ try {
 catch { Write-error "Error creating resource group. "}
 Write-Verbose "Deploying solution through bicep."
 try { 
-    New-AzResourceGroupDeployment -ResourceGroupName $resourcegroup -Name "guardraildeployment$(get-date -format "ddmmyyHHmmss")" -TemplateParameterFile .\parameters.json -TemplateFile .\guardrails.bicep
+    New-AzResourceGroupDeployment -ResourceGroupName $resourcegroup -Name "guardraildeployment$(get-date -format "ddmmyyHHmmss")" `
+    -TemplateParameterFile .\parameters.json -TemplateFile .\guardrails.bicep -WarningAction SilentlyContinue
 }
 catch {
     Write-error "Error deploying solution to Azure."
