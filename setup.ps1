@@ -26,7 +26,14 @@ import-module .\blob-functions.psm1
 # test
 #Configuration Variables
 $randomstoragechars=-join ((97..122) | Get-Random -Count 4 | ForEach-Object {[char]$_})
-$config=get-content $configFilePath | convertfrom-json
+Write-Output "Reading Config file:"
+try {
+    $config=get-content $configFilePath | convertfrom-json
+}
+catch {
+    "Error reading config file."
+    break
+}
 
 $keyVaultName=$config.keyVaultName
 $resourcegroup=$config.resourcegroup
@@ -134,6 +141,7 @@ if ($null -eq $currentUserId)
     break;
 }
 #region  Template Deployment
+Write-Output "Creating bicep parameters file for this deployment."
 $parameterTemplate=get-content .\parameters_template.json
 $parameterTemplate=$parameterTemplate.Replace("%kvName%",$keyVaultName)
 $parameterTemplate=$parameterTemplate.Replace("%location%",$region)
@@ -162,72 +170,101 @@ catch {
 }
 #endregion
 #Add current user as a Keyvault administrator (for setup)
-$kv=Get-AzKeyVault -ResourceGroupName $keyVaultRG -VaultName $keyVaultName
-New-AzRoleAssignment -ObjectId $currentUserId -RoleDefinitionName "Key Vault Administrator" -Scope $kv.ResourceId
+try {$kv=Get-AzKeyVault -ResourceGroupName $keyVaultRG -VaultName $keyVaultName} catch {"Error fetching KV object.";break}
+try {New-AzRoleAssignment -ObjectId $currentUserId -RoleDefinitionName "Key Vault Administrator" -Scope $kv.ResourceId}catch {"Error assigning permissions to KV.";break}
 Write-Output "Sleeping 30 seconds to allow for permissions to be propagated."
 Start-Sleep -Seconds 30
 #region Secret Setup
 # Adds keyvault secret user permissions to the Automation account
 Write-Verbose "Adding automation account Keyvault Secret User."
-New-AzRoleAssignment -ObjectId (Get-AzAutomationAccount -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourceGroup).Identity.PrincipalId -RoleDefinitionName "Key Vault Secrets User" -Scope $kv.ResourceId
+try {
+    New-AzRoleAssignment -ObjectId (Get-AzAutomationAccount -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourceGroup).Identity.PrincipalId -RoleDefinitionName "Key Vault Secrets User" -Scope $kv.ResourceId
+}
+catch 
+{
+    "Error assigning permissions to Automation account (for keyvault)."
+    break
+}
 
 Write-Verbose "Adding workspacekey secret to keyvault."
-$workspaceKey=(Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspaceRG -Name $logAnalyticsworkspaceName).PrimarySharedKey
-$secretvalue = ConvertTo-SecureString $workspaceKey -AsPlainText -Force 
-$secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "WorkSpaceKey" -SecretValue $secretvalue
+try {
+    $workspaceKey=(Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspaceRG -Name $logAnalyticsworkspaceName).PrimarySharedKey
+    $secretvalue = ConvertTo-SecureString $workspaceKey -AsPlainText -Force 
+    $secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "WorkSpaceKey" -SecretValue $secretvalue
+}
+catch {"Error adding WS secret to KV.";break}
 #endregion
 
 #region Import main runbook
-Write-Verbose "Importing Runbooks." #only one for now, as a template.
-Import-AzAutomationRunbook -Name $mainRunbookName -Path "$mainRunbookpath\main.ps1" -Description $mainRunbookDescription -Type PowerShell -Published -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName
-#Create schedule
-New-AzAutomationSchedule -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName -Name "GR-Hourly" -StartTime (get-date).AddHours(1) -HourInterval 1
-#Register
-Register-AzAutomationScheduledRunbook -Name $mainRunbookName -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName -ScheduleName "GR-Hourly"
+Write-Verbose "Importing Runbook." #only one for now, as a template.
+try {
+    Import-AzAutomationRunbook -Name $mainRunbookName -Path "$mainRunbookpath\main.ps1" -Description $mainRunbookDescription -Type PowerShell -Published -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName
+    #Create schedule
+    New-AzAutomationSchedule -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName -Name "GR-Hourly" -StartTime (get-date).AddHours(1) -HourInterval 1
+    #Register
+    Register-AzAutomationScheduledRunbook -Name $mainRunbookName -ResourceGroupName $resourcegroup -AutomationAccountName $autoMationAccountName -ScheduleName "GR-Hourly"
+}
+catch {
+    "Error importing Runbook."
+    break
+}
 #endregion
 
 #region Other secrects
 #Breakglass accounts and UPNs
-$secretvalue = ConvertTo-SecureString $bga1 -AsPlainText -Force 
-$secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "BGA1" -SecretValue $secretvalue
-$secretvalue = ConvertTo-SecureString $bga2 -AsPlainText -Force 
-$secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "BGA2" -SecretValue $secretvalue
+try {
+    $secretvalue = ConvertTo-SecureString $bga1 -AsPlainText -Force 
+    $secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "BGA1" -SecretValue $secretvalue
+    $secretvalue = ConvertTo-SecureString $bga2 -AsPlainText -Force 
+    $secret = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name "BGA2" -SecretValue $secretvalue
 #endregion
+
 #region Assign permissions
-$GraphAppId="00000003-0000-0000-c000-000000000000"
-Write-Output "Adding Permissions to Automation Account - Managed Identity"
-import-module AzureAD.Standard.Preview
-AzureAD.Standard.Preview\Connect-AzureAD -Identity -TenantID $env:ACC_TID
-$MSI = (Get-AzureADServicePrincipal -Filter "displayName eq '$autoMationAccountName'")
-#Start-Sleep -Seconds 10
-$graph = Get-AzureADServicePrincipal -Filter "appId eq '$GraphAppId'"
-#$approleid = ($GraphServicePrincipal.AppRoles | `
-#Where-Object {$_.Value -eq $PermissionName -and $_.AllowedMemberTypes -contains "Application"}).Id
-$appRoleIds=@("Organization.Read.All", "User.Read.All", "UserAuthenticationMethod.Read.All","Policy.Read.All")
-foreach ($approleidName in $appRoleIds)
-{
-    Write-Output "Adding permission to $approleidName"
-    $approleid=($graph.AppRoles | Where-Object {$_.Value -eq $approleidName}).Id
-    if ($null -ne $approleid)
+    $GraphAppId="00000003-0000-0000-c000-000000000000"
+    Write-Output "Adding Permissions to Automation Account - Managed Identity"
+    import-module AzureAD.Standard.Preview
+    AzureAD.Standard.Preview\Connect-AzureAD -Identity -TenantID $env:ACC_TID
+    $MSI = (Get-AzureADServicePrincipal -Filter "displayName eq '$autoMationAccountName'")
+    #Start-Sleep -Seconds 10
+    $graph = Get-AzureADServicePrincipal -Filter "appId eq '$GraphAppId'"
+    #$approleid = ($GraphServicePrincipal.AppRoles | `
+    #Where-Object {$_.Value -eq $PermissionName -and $_.AllowedMemberTypes -contains "Application"}).Id
+    $appRoleIds=@("Organization.Read.All", "User.Read.All", "UserAuthenticationMethod.Read.All","Policy.Read.All")
+    foreach ($approleidName in $appRoleIds)
     {
-        try {
-            New-AzureAdServiceAppRoleAssignment -ObjectId $MSI.ObjectId -PrincipalId $MSI.ObjectId -ResourceId $graph.ObjectId -Id $approleid
+        Write-Output "Adding permission to $approleidName"
+        $approleid=($graph.AppRoles | Where-Object {$_.Value -eq $approleidName}).Id
+        if ($null -ne $approleid)
+        {
+            try {
+                New-AzureAdServiceAppRoleAssignment -ObjectId $MSI.ObjectId -PrincipalId $MSI.ObjectId -ResourceId $graph.ObjectId -Id $approleid
+            }
+            catch {
+                "Error assigning permissions $approleid to $approleidName"
+            }
         }
-        catch {
-            "Error assigning permissions $approleid to $approleidName"
+        else {
+            Write-Output "App Role Id $approleid Not found... :("
         }
-    }
-    else {
-        Write-Output "App Role Id $approleid Not found... :("
     }
 }
+catch {
+    "Error assigning permissions to graph API."
+    break 
+}
 #endregion
-$rootmg=get-azmanagementgroup | ? {$_.Id.Split("/")[4] -eq (Get-AzContext).Tenant.Id}
-$AAId=(Get-AzAutomationAccount -ResourceGroupName $resourcegroup -Name $autoMationAccountName).Identity.PrincipalId
-Write-Output "Assigning reader access to the Automation Account Managed Identity for MG: $($rootmg.DisplayName)"
-New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName Reader -Scope $rootmg.Id
-#New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Storage Blob Data Reader" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
-New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Reader and Data Access" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
+try {
+    Write-Output "Assigning reader access to the Automation Account Managed Identity for MG: $($rootmg.DisplayName)"
+    $rootmg=get-azmanagementgroup | ? {$_.Id.Split("/")[4] -eq (Get-AzContext).Tenant.Id}
+    $AAId=(Get-AzAutomationAccount -ResourceGroupName $resourcegroup -Name $autoMationAccountName).Identity.PrincipalId
+    New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName Reader -Scope $rootmg.Id
+    #New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Storage Blob Data Reader" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
+    New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Reader and Data Access" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
+}
+catch {
+    "Error assigning root management group permissions."
+    break
+}
 <#
 if ($subs.count -gt 1) # More than one subscriptions is available for the user installing the solution.
 {   
@@ -252,5 +289,10 @@ else {
 #Write-Output "Please visit https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps , click on the new SPN ($spnName), select API Permissions and click Grant admin consent."
 #Write-Output "Once permissions above are set, run the main runbook for initial data gathering:"
 #Write-output "Start-AzAutomationRunbook -Name ""main"" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup"
-Start-AzAutomationRunbook -Name "main" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup
+try {
+    Start-AzAutomationRunbook -Name "main" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup
+}
+catch { 
+    "Error starting runbook."
+}
 

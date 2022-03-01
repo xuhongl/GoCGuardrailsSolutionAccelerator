@@ -1,7 +1,3 @@
-#region import-module  
-Using module AzureGraph
-
-#endregion import-module 
 Disable-AzContextAutosave
 
 #region Parameters 
