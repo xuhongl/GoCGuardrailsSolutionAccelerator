@@ -8,6 +8,7 @@ param kvName string = 'guardrails-kv'
 param automationAccountName string = 'guardrails-AC'
 param logAnalyticsWorkspaceName string = 'guardrails-LAW'
 param PBMMPolicyID string = '4c4a5f27-de81-430b-b4e5-9cbd50595a87'
+param AllowedLocationPolicyId string = 'e56962a6-4747-49cd-b67b-bf8b01975c4c'
 param deployKV bool = true
 param deployLAW bool = true
 //var <variable-name> = <variable-value>
@@ -468,7 +469,7 @@ resource module14 'modules' ={
     'name': 'PBMMPolicyID'
     'properties': {
         'isEncrypted': false
-        'value': '"${PBMMPolicyID}"'
+        'value': '"/providers/Microsoft.Authorization/policyDefinitions/${PBMMPolicyID}"'
     }
   }
   resource variable5 'variables' = {
@@ -497,6 +498,13 @@ resource module14 'modules' ={
     'properties': {
         'isEncrypted': false
         'value': '"${resourceGroup().name}"'
+    }
+  }
+  resource variable9 'variables' = {
+    'name': 'AllowedLocationPolicyId'
+    'properties': {
+        'isEncrypted': false
+        'value': '"/providers/Microsoft.Authorization/policyDefinitions/${AllowedLocationPolicyId}"'
     }
   }
 }
