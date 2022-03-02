@@ -283,6 +283,9 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
         version: '0.3.0'
       }
     }
+    dependsOn: [
+      module18
+    ]
   }
   resource AzureGraph 'modules' ={
     name: 'AzureGraph'
