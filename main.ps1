@@ -22,6 +22,7 @@ $StorageAccountName=Get-AutomationVariable -Name "StorageAccountName"
 $ContainerName=Get-AutomationVariable -Name "ContainerName" 
 $PBMMPolicyID=Get-AutomationVariable -Name "PBMMPolicyID"
 $ResourceGroupName=Get-AutomationVariable -Name "ResourceGroupName"
+$AllowedLocationPolicyId=Get-AutomationVariable -Name "AllowedLocationPolicyId"
 #$=Get-AutomationVariable -Name "" 
 #endregion Parameters 
 # Connects to Azure using the Automation Account's managed identity
