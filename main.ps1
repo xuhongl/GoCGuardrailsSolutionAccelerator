@@ -84,7 +84,7 @@ Check-MonitorAccountCreation -Token $GraphAccessToken -DepartmentNumner "56" -Co
 "Verify-PBMMPolicy"
 Verify-PBMMPolicy -ControlName $CtrName5  -ItemName "PBMMPolicy Compliance" -PolicyID $PBMMPolicyID -LogType $LogType -WorkSpaceID $WorkSpaceID -WorkspaceKey $WorkspaceKey
 "Verify-AllowedLocationPolicy"
-Verify-AllowedLocationPolicy -ControlName $CtrName5 -ItemName "AllowedLocationPolicy" -PolicyID $AllowedLocationPolicyId -LogType $LogType -WorkSpaceID $workspaceKey -workspaceKey $workspaceKey
+Verify-AllowedLocationPolicy -ControlName $CtrName5 -ItemName "AllowedLocationPolicy" -PolicyID $AllowedLocationPolicyId -LogType $LogType -WorkSpaceID $WorkSpaceID -workspaceKey $workspaceKey
 #Guardrail module 8
 "Get-SubnetComplianceInformation" 
 Get-SubnetComplianceInformation -ControlName $CtrName8 -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey
