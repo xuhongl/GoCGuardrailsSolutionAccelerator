@@ -290,6 +290,8 @@ else {
 #Write-Output "Please visit https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps , click on the new SPN ($spnName), select API Permissions and click Grant admin consent."
 #Write-Output "Once permissions above are set, run the main runbook for initial data gathering:"
 #Write-output "Start-AzAutomationRunbook -Name ""main"" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup"
+Write-Output "Waiting 60 seconds to allow for management group permissions to be applied."
+Start-Sleep -Seconds 60
 try {
     Start-AzAutomationRunbook -Name "main" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup
 }
