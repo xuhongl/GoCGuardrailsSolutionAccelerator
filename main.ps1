@@ -93,5 +93,5 @@ Get-SubnetComplianceInformation -ControlName $CtrName8 -WorkSpaceID $WorkSpaceID
 Get-VnetComplianceInformation -ControlName $CtrName9 -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey 
 #Guardrail module 12 
 "Check-PrivateMarketPlaceCreaion"
-Check-PrivateMarketPlaceCreaion -ContainerName $Ctrname12  -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey -LogType $LogType
+Check-PrivateMarketPlaceCreaion -ControlName $Ctrname12  -WorkSpaceID $WorkSpaceID -workspaceKey $WorkspaceKey -LogType $LogType
 #Confirm-CloudConsoleAccess -token $token.access_token -PolicyName 
