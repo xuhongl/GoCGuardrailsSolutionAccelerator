@@ -23,7 +23,7 @@ var wbConfig1 ='''
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "let GR8status=GuardrailsCompliance_CL \r\n| where ControlName_s has \"GUARDRAIL 8:\" and ComplianceStatus_b == false\r\n| summarize NotCompliantCount=count() by ControlName_s, ItemName_s\r\n| extend Status=iif(NotCompliantCount <1, '✔️ ', '❌ ')\r\n| project ControlName=ControlName_s, ['Compliance Status']=Status, ['Item Name']=ItemName_s;\r\nGuardrailsCompliance_CL \r\n| where ControlName_s <> \"GUARDRAIL 8: NETWORK SEGMENTATION AND SEPARATION\"\r\n| summarize Requests = count() by ControlName = ControlName_s ,  ['Item Name'] = ItemName_s , ComplianceStatus_b\r\n| extend  ['Compliance Status'] = iif( ComplianceStatus_b, '✔️ ', '❌ ')\r\n| order by ControlName ,  ['Item Name'], ['Compliance Status']\r\n| project   ControlName ,  ['Item Name'], ['Compliance Status']\r\n| union GR8status",
+        "query": "let GR8status=GuardrailsCompliance_CL \r\n| where ControlName_s has \"GUARDRAIL 8:\" and ComplianceStatus_b == false\r\n| summarize NotCompliantCount=count() by ControlName_s, ItemName_s\r\n| extend Status=iif(NotCompliantCount <1, '✔️ ', '❌ ')\r\n| project ControlName=ControlName_s, ['Compliance Status']=Status, ['Item Name']=ItemName_s;\r\nlet GR5status=GuardrailsCompliance_CL \r\n| where ControlName_s has \"GUARDRAIL 5:\" and ComplianceStatus_b == false\r\n| summarize NotCompliantCount=count() by ControlName_s, ItemName_s\r\n| extend Status=iif(NotCompliantCount <1, '✔️ ', '❌ ')\r\n| project ControlName=ControlName_s, ['Compliance Status']=Status, ['Item Name']=ItemName_s;\r\nGuardrailsCompliance_CL \r\n| where ControlName_s <> \"GUARDRAIL 8: NETWORK SEGMENTATION AND SEPARATION\"\r\n| where ControlName_s <> \"GUARDRAIL 5: DATA LOCATION\"\r\n| summarize Requests = count() by ControlName = ControlName_s ,  ['Item Name'] = ItemName_s , ComplianceStatus_b\r\n| extend  ['Compliance Status'] = iif( ComplianceStatus_b, '✔️ ', '❌ ')\r\n| order by ControlName ,  ['Item Name'], ['Compliance Status']\r\n| project   ControlName ,  ['Item Name'], ['Compliance Status']\r\n| union GR5status\r\n| union GR8status ",
         "size": 3,
         "timeContext": {
           "durationMs": 3600000
@@ -140,6 +140,14 @@ var wbConfig1 ='''
             "linkLabel": "GUARDRAIL 9",
             "subTarget": "gr9",
             "style": "link"
+          },
+          {
+            "id": "144c0d71-a9de-4e02-95bf-0474d243ada6",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "GUARDRAIL 12",
+            "subTarget": "gr12",
+            "style": "link"
           }
         ]
       },
@@ -171,6 +179,79 @@ var wbConfig1 ='''
         "value": "gr8"
       },
       "name": "query - 2"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 12:\" \r\n| project SubnetName=SubnetName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr8"
+      },
+      "name": "query - 2 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 5:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr5"
+      },
+      "name": "query - 2 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 12:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr12"
+      },
+      "name": "query - 2 - Copy - Copy - Copy"
     },
     {
       "type": 3,
