@@ -493,7 +493,7 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
     name: 'AzureGraph'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/AzureGraph.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/AzureGraph.zip'
         version: '1.0.0'
       }
     }
@@ -502,7 +502,7 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
     name: 'Check-BreackGlassAccountOwnersInformation'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-BreackGlassAccountOwnersInformation.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-BreackGlassAccountOwnersInformation.zip'
         version: '1.0.0'
       }
     }
@@ -511,7 +511,7 @@ resource module2 'modules' ={
     name: 'Check-BreakGlassAccountIdentityProtectionLicense'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-BreakGlassAccountIdentityProtectionLicense.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-BreakGlassAccountIdentityProtectionLicense.zip'
         version: '1.0.0'
       }
     }
@@ -520,7 +520,7 @@ resource module3 'modules' ={
     name: 'Check-BreakGlassAccountProcedure'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-BreakGlassAccountProcedure.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-BreakGlassAccountProcedure.zip'
         version: '1.0.0'
       }
     }
@@ -529,7 +529,7 @@ resource module4 'modules' ={
     name: 'Check-DeprecatedAccounts'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-DeprecatedAccounts.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-DeprecatedAccounts.zip'
         version: '1.0.0'
       }
     }
@@ -538,7 +538,7 @@ resource module5 'modules' ={
     name: 'Check-ExternalAccounts'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-ExternalAccounts.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-ExternalAccounts.zip'
         version: '1.0.0'
       }
     }
@@ -547,7 +547,7 @@ resource module6 'modules' ={
     name: 'Check-GuardRailsConditionalAccessPolicie'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-GuardRailsConditionalAccessPolicie.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-GuardRailsConditionalAccessPolicie.zip'
         version: '1.0.0'
       }
     }
@@ -556,7 +556,7 @@ resource module7 'modules' ={
     name: 'Check-MonitorAccount'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-MonitorAccount.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-MonitorAccount.zip'
         version: '1.0.0'
       }
     }
@@ -565,7 +565,7 @@ resource module8 'modules' ={
     name: 'Check-PBMMPolicy'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-PBMMPolicy.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-PBMMPolicy.zip'
         version: '1.0.0'
       }
     }
@@ -574,7 +574,7 @@ resource module9 'modules' ={
     name: 'Check-SubnetComplianceStatus'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-SubnetComplianceStatus.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-SubnetComplianceStatus.zip'
         version: '1.0.0'
       }
     }
@@ -583,7 +583,7 @@ resource module10 'modules' ={
     name: 'Check-VNetComplianceStatus'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-VNetComplianceStatus.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-VNetComplianceStatus.zip'
         version: '1.0.0'
       }
     }
@@ -592,7 +592,7 @@ resource module11 'modules' ={
     name: 'Detect-UserBGAUsersAuthMethods'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Detect-UserBGAUsersAuthMethods.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Detect-UserBGAUsersAuthMethods.zip'
         version: '1.0.0'
       }
     }
@@ -601,7 +601,7 @@ resource module12 'modules' ={
     name: 'Get-AzureADLicenseType'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Get-AzureADLicenseType.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Get-AzureADLicenseType.zip'
         version: '1.0.0'
       }
     }
@@ -610,7 +610,7 @@ resource module13 'modules' ={
     name: 'Get-Tags'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Get-Tags.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Get-Tags.zip'
         version: '1.0.0'
       }
     }
@@ -619,7 +619,7 @@ resource module14 'modules' ={
     name: 'Validate-BreakGlassAccount'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Validate-BreakGlassAccount.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Validate-BreakGlassAccount.zip'
         version: '1.0.0'
       }
     }
@@ -628,7 +628,7 @@ resource module14 'modules' ={
     name: 'Check-AllowedLocationPolicy'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-AllowedLocationPolicy.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-AllowedLocationPolicy.zip'
         version: '1.0.0'
       }
     }
@@ -637,7 +637,7 @@ resource module14 'modules' ={
     name: 'Check-PrivateMarketPlace'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-PrivateMarketPlace.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-PrivateMarketPlace.zip'
         version: '1.0.0'
       }
     }
@@ -667,7 +667,7 @@ resource module14 'modules' ={
     name: 'Check-CyberSecurityServices'
     properties: {
       contentLink: {
-        uri: 'https://github.com/igomaa/GoCGuardrailsSolutionAccelerator/blob/Final/psmodules/Check-CyberSecurityServices.zip'
+        uri: 'https://raw.githubusercontent.com/igomaa/GoCGuardrailsSolutionAccelerator/Final/psmodules/Check-CyberSecurityServices.zip'
         version: '1.0.0'
       }
     }
