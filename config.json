@@ -1,12 +1,13 @@
 {
-  "keyVaultName": "guardrailstest-kv",
-  "resourcegroup": "Guardrailtest",
+  "keyVaultName": "guardrails",
+  "resourcegroup": "Guardrails",
   "region": "CanadaCentral",
-  "storageaccountName": "guardrailtest",
-  "logAnalyticsworkspaceName": "guardrailstest-LAW",
-  "autoMationAccountName": "guardrailstest-AC",
+  "storageaccountName": "guardrails",
+  "logAnalyticsworkspaceName": "guardrails",
+  "autoMationAccountName": "guardrails",
   "bga1": "user1@domain.com",
   "bga2": "user2@domain.com",
   "PBMMPolicyID":"4c4a5f27-de81-430b-b4e5-9cbd50595a87",
-  "AllowedLocationPolicyId": "e56962a6-4747-49cd-b67b-bf8b01975c4c"
+  "AllowedLocationPolicyId": "e56962a6-4747-49cd-b67b-bf8b01975c4c",
+  "DepartmentNumber": ""
 }

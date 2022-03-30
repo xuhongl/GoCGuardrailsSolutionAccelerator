@@ -9,6 +9,7 @@ param automationAccountName string = 'guardrails-AC'
 param logAnalyticsWorkspaceName string = 'guardrails-LAW'
 param PBMMPolicyID string = '4c4a5f27-de81-430b-b4e5-9cbd50595a87'
 param AllowedLocationPolicyId string = 'e56962a6-4747-49cd-b67b-bf8b01975c4c'
+param DepartmentNumber string
 param deployKV bool = true
 param deployLAW bool = true
 //var <variable-name> = <variable-value>
@@ -86,7 +87,7 @@ var wbConfig1 ='''
             "style": "link"
           },
           {
-            "id": "6a683359-7ed3-42b1-a509-3cdcd18017cf",
+            "id": "6a683359-5ed3-42b1-a509-3cdcd18017cf",
             "cellValue": "selectedTab",
             "linkTarget": "parameter",
             "linkLabel": "GUARDRAIL 3",
@@ -94,7 +95,7 @@ var wbConfig1 ='''
             "style": "link"
           },
           {
-            "id": "6a383959-7ed3-42b1-a509-3cdcd18017cf",
+            "id": "6a383959-1ed3-42b1-a509-3cdcd18017cf",
             "cellValue": "selectedTab",
             "linkTarget": "parameter",
             "linkLabel": "GUARDRAIL 4",
@@ -110,11 +111,11 @@ var wbConfig1 ='''
             "style": "link"
           },
           {
-            "id": "6a683959-7fd3-42b1-a509-3cdcd18017cf",
+            "id": "6a683959-4fd3-42b1-a509-3cdcd18017cf",
             "cellValue": "selectedTab",
             "linkTarget": "parameter",
             "linkLabel": "GUARDRAIL 6",
-            "subTarget": "gr6",
+            "subTarget": "test6",
             "style": "link"
           },
           {
@@ -142,6 +143,22 @@ var wbConfig1 ='''
             "style": "link"
           },
           {
+            "id": "6bc4aa50-56c1-425b-9894-d6d7edb20e3a",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "GUARDRAIL 10",
+            "subTarget": "gr10",
+            "style": "link"
+          },
+          {
+            "id": "cad591d5-9404-46e2-b56f-b32723b390de",
+            "cellValue": "selectedTab",
+            "linkTarget": "parameter",
+            "linkLabel": "GUARDRAIL 11",
+            "subTarget": "gr11",
+            "style": "link"
+          },
+          {
             "id": "144c0d71-a9de-4e02-95bf-0474d243ada6",
             "cellValue": "selectedTab",
             "linkTarget": "parameter",
@@ -157,55 +174,81 @@ var wbConfig1 ='''
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 8:\" \r\n| project SubnetName=SubnetName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 1\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
         "size": 0,
+        "title": "GR 1",
         "timeContext": {
           "durationMs": 3600000
         },
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces",
-        "gridSettings": {
-          "hierarchySettings": {
-            "treeType": 1,
-            "groupBy": [
-              "Status"
-            ]
-          }
-        }
+        "resourceType": "microsoft.operationalinsights/workspaces"
       },
       "conditionalVisibility": {
         "parameterName": "selectedTab",
         "comparison": "isEqualTo",
-        "value": "gr8"
+        "value": "gr1"
       },
-      "name": "query - 2"
+      "name": "Gr1"
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 12:\" \r\n| project SubnetName=SubnetName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 2\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
         "size": 0,
+        "title": "GR 2",
         "timeContext": {
           "durationMs": 3600000
         },
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces",
-        "gridSettings": {
-          "hierarchySettings": {
-            "treeType": 1,
-            "groupBy": [
-              "Status"
-            ]
-          }
-        }
+        "resourceType": "microsoft.operationalinsights/workspaces"
       },
       "conditionalVisibility": {
         "parameterName": "selectedTab",
         "comparison": "isEqualTo",
-        "value": "gr8"
+        "value": "gr2"
       },
-      "name": "query - 2 - Copy"
+      "name": "Gr1 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 3\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
+        "size": 0,
+        "title": "GR 3",
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr3"
+      },
+      "name": "Gr1 - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 4\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
+        "size": 0,
+        "title": "GR 4",
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr4"
+      },
+      "name": "query - 6 - Copy"
     },
     {
       "type": 3,
@@ -213,6 +256,7 @@ var wbConfig1 ='''
         "version": "KqlItem/1.0",
         "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 5:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
         "size": 0,
+        "title": "GR 5",
         "timeContext": {
           "durationMs": 3600000
         },
@@ -238,20 +282,86 @@ var wbConfig1 ='''
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 12:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 6:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
         "size": 0,
+        "title": "GR 6",
         "timeContext": {
           "durationMs": 3600000
         },
+        "exportToExcelOptions": "all",
         "queryType": 0,
-        "resourceType": "microsoft.operationalinsights/workspaces"
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
       },
       "conditionalVisibility": {
         "parameterName": "selectedTab",
         "comparison": "isEqualTo",
-        "value": "gr12"
+        "value": "test6"
       },
-      "name": "query - 2 - Copy - Copy - Copy"
+      "name": "query - 26 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 7:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "title": "GR 7",
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr7"
+      },
+      "name": "query - 6 - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 8:\" \r\n| project SubnetName=SubnetName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "title": "GR 8",
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr8"
+      },
+      "name": "query - 2"
     },
     {
       "type": 3,
@@ -259,6 +369,7 @@ var wbConfig1 ='''
         "version": "KqlItem/1.0",
         "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 9:\" \r\n| project ['VNet Name']=VNETName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n",
         "size": 0,
+        "title": "GR 9",
         "timeContext": {
           "durationMs": 3600000
         },
@@ -276,8 +387,9 @@ var wbConfig1 ='''
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 1\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 10:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
         "size": 0,
+        "title": "GR 10",
         "timeContext": {
           "durationMs": 3600000
         },
@@ -287,16 +399,17 @@ var wbConfig1 ='''
       "conditionalVisibility": {
         "parameterName": "selectedTab",
         "comparison": "isEqualTo",
-        "value": "gr1"
+        "value": "gr10"
       },
-      "name": "Gr1"
+      "name": "query - 2 - Copy - Copy - Copy"
     },
     {
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 4\"\r\n|project ItemName=ItemName_s, Comments=Comments_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ ')",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 11:\" \r\n| project ItemName_s,DisplayName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
         "size": 0,
+        "title": "GR 11",
         "timeContext": {
           "durationMs": 3600000
         },
@@ -306,9 +419,37 @@ var wbConfig1 ='''
       "conditionalVisibility": {
         "parameterName": "selectedTab",
         "comparison": "isEqualTo",
-        "value": "gr4"
+        "value": "gr11"
       },
-      "name": "query - 6 - Copy"
+      "name": "query - 2 - Copy - Copy - Copy - Copy"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "GuardrailsCompliance_CL\r\n| where ControlName_s has \"GUARDRAIL 12:\" \r\n| project SubnetName=SubnetName_s, Status=iif(tostring(ComplianceStatus_b)==\"True\", '✔️ ', '❌ '), Comments=Comments_s\r\n| sort by Status asc",
+        "size": 0,
+        "title": "GR12",
+        "timeContext": {
+          "durationMs": 3600000
+        },
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "gridSettings": {
+          "hierarchySettings": {
+            "treeType": 1,
+            "groupBy": [
+              "Status"
+            ]
+          }
+        }
+      },
+      "conditionalVisibility": {
+        "parameterName": "selectedTab",
+        "comparison": "isEqualTo",
+        "value": "gr12"
+      },
+      "name": "query - 2 - Copy"
     }
   ],
   "fallbackResourceIds": [
@@ -347,27 +488,6 @@ resource guardrailsAC 'Microsoft.Automation/automationAccounts@2021-06-22' = {
         version: '1.6.0'
       }
     }
-  }
-  resource module18 'modules' ={
-    name: 'Az.Accounts'
-    properties: {
-      contentLink: {
-        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.accounts.2.7.2.nupkg'
-        version: '0.3.0'
-      }
-    }
-  }
-  resource module17 'modules' ={
-    name: 'Az.Marketplace'
-    properties: {
-      contentLink: {
-        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.marketplace.0.3.0.nupkg'
-        version: '0.3.0'
-      }
-    }
-    dependsOn: [
-      module18
-    ]
   }
   resource AzureGraph 'modules' ={
     name: 'AzureGraph'
@@ -522,8 +642,38 @@ resource module14 'modules' ={
       }
     }
   }
+  resource module17 'modules' ={
+    name: 'Az.Marketplace'
+    properties: {
+      contentLink: {
+        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.marketplace.0.3.0.nupkg'
+        version: '0.3.0'
+      }
+    }
+    dependsOn: [
+      module18
+    ]
+  }
+  resource module18 'modules' ={
+    name: 'Az.Accounts'
+    properties: {
+      contentLink: {
+        uri: 'https://devopsgallerystorage.blob.core.windows.net:443/packages/az.accounts.2.7.2.nupkg'
+        version: '0.3.0'
+      }
+    }
+  }
+  resource module19 'modules' ={
+    name: 'Check-CyberSecurityServices'
+    properties: {
+      contentLink: {
+        uri: 'https://guardrail.blob.core.windows.net/psmodules/Check-CyberSecurityServices.zip'
+        version: '1.0.0'
+      }
+    }
+  }
 
-
+  
   resource variable1 'variables' = {
     name: 'KeyvaultName'
     properties: {
@@ -587,6 +737,13 @@ resource module14 'modules' ={
         'isEncrypted': false
         'value': '"/providers/Microsoft.Authorization/policyDefinitions/${AllowedLocationPolicyId}"'
     }
+  }
+  resource variable10 'variables' = {
+    name: 'DepartmentNumber'
+    'properties': {
+      'isEncrypted': false
+      'value': '"/providers/Microsoft.Authorization/policyDefinitions/${DepartmentNumber}"'
+  }
   }
 }
 

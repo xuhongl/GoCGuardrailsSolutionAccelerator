@@ -34,23 +34,22 @@ catch {
     "Error reading config file."
     break
 }
-
-$keyVaultName=$config.keyVaultName
-$resourcegroup=$config.resourcegroup
+$tenantIDtoAppend="-"+$($env:ACC_TID).Split("-")[0]
+$keyVaultName=$config.keyVaultName+$tenantIDtoAppend
+$resourcegroup=$config.resourcegroup+$tenantIDtoAppend
 $region=$config.region
 $storageaccountName="$($config.storageaccountName)$randomstoragechars"
-$logAnalyticsworkspaceName=$config.logAnalyticsworkspaceName
-$autoMationAccountName=$config.autoMationAccountName
+$logAnalyticsworkspaceName=$config.logAnalyticsworkspaceName+$tenantIDtoAppend
+$autoMationAccountName=$config.autoMationAccountName+$tenantIDtoAppend
 $keyVaultRG=$resourcegroup #initially, same RG.
 $logAnalyticsWorkspaceRG=$resourcegroup #initially, same RG.
 $deployKV='true'
 $deployLAW='true'
-#$spnName=$config.spnName
 $bga1=$config.bga1 #Break glass account 1
 $bga2=$config.bga2 #Break glass account 2
 $PBMMPolicyID=$config.PBMMPolicyID
-#$FirstBreakGlassUPN=$config.FirstBreakGlassUPN 
-#$SecondBreakGlassUPN=$config.SecondBreakGlassUPN
+$AllowedLocationPolicyId=$config.AllowedLocationPolicyId
+$DepartmentNumber=$config.DepartmentNumber
 
 #Other Variables
 $mainRunbookName="main"
@@ -152,6 +151,8 @@ $parameterTemplate=$parameterTemplate.Replace("%subscriptionId%",(Get-AzContext)
 $parameterTemplate=$parameterTemplate.Replace("%PBMMPolicyID%",$PBMMPolicyID)
 $parameterTemplate=$parameterTemplate.Replace("%deployKV%",$deployKV)
 $parameterTemplate=$parameterTemplate.Replace("%deployLAW%",$deployLAW)
+$parameterTemplate=$parameterTemplate.Replace("%AllowedLocationPolicyId%",$AllowedLocationPolicyId)
+$parameterTemplate=$parameterTemplate.Replace("%DepartmentNumber%",$DepartmentNumber)
 $parameterTemplate | out-file .\parameters.json -Force
 #endregion
 
@@ -228,8 +229,6 @@ try {
     $MSI = (Get-AzureADServicePrincipal -Filter "displayName eq '$autoMationAccountName'")
     #Start-Sleep -Seconds 10
     $graph = Get-AzureADServicePrincipal -Filter "appId eq '$GraphAppId'"
-    #$approleid = ($GraphServicePrincipal.AppRoles | `
-    #Where-Object {$_.Value -eq $PermissionName -and $_.AllowedMemberTypes -contains "Application"}).Id
     $appRoleIds=@("Organization.Read.All", "User.Read.All", "UserAuthenticationMethod.Read.All","Policy.Read.All")
     foreach ($approleidName in $appRoleIds)
     {
@@ -259,37 +258,12 @@ try {
     $rootmg=get-azmanagementgroup | ? {$_.Id.Split("/")[4] -eq (Get-AzContext).Tenant.Id}
     $AAId=(Get-AzAutomationAccount -ResourceGroupName $resourcegroup -Name $autoMationAccountName).Identity.PrincipalId
     New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName Reader -Scope $rootmg.Id
-    #New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Storage Blob Data Reader" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
     New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName "Reader and Data Access" -Scope (Get-AzStorageAccount -ResourceGroupName $resourceGroup -Name $storageaccountName).Id
 }
 catch {
     "Error assigning root management group permissions."
     break
 }
-<#
-if ($subs.count -gt 1) # More than one subscriptions is available for the user installing the solution.
-{   
-    Write-output "More than one subscription detected. Current subscription $((get-azcontext).Name)"
-    $selection=Read-Host "Would you like to assign reader permission for the solution to all available subcriptions (Y/N). Default is No."
-}
-if ($selection -eq 'Y')
-{
-    $AAId=(Get-AzAutomationAccount -ResourceGroupName $resourcegroup -Name $autoMationAccountName).Identity.PrincipalId
-    foreach ($sub in $subs)
-    {
-        New-AzRoleAssignment -ObjectId $AAId -RoleDefinitionName Reader -Scope "/subscriptions/$(sub.Id)"        
-    }   
-}
-else {
-    Write-Output "Adding reader permissions to current subscription to the automation account. Add other permissions as required."
-    New-AzRoleAssignment -ObjectId (Get-AzAutomationAccount -ResourceGroupName $resourcegroup -Name $autoMationAccountName).Identity.PrincipalId -RoleDefinitionName Reader -Scope "/subscriptions/$((get-azcontext).Subscription.Id)"
-}
-#>
-#Start-Sleep -Seconds 20
-#Write-Output "Setup complete. Please add the SPN permissions to the required subscriptions to allow ver complicance assessment."
-#Write-Output "Please visit https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps , click on the new SPN ($spnName), select API Permissions and click Grant admin consent."
-#Write-Output "Once permissions above are set, run the main runbook for initial data gathering:"
-#Write-output "Start-AzAutomationRunbook -Name ""main"" -AutomationAccountName $autoMationAccountName -ResourceGroupName $resourcegroup"
 Write-Output "Waiting 60 seconds to allow for management group permissions to be applied."
 Start-Sleep -Seconds 60
 try {

@@ -22,6 +22,12 @@
     },
     "PBMMPolicyID": {
       "value": "%PBMMPolicyID%"
+    },    
+    "AllowedLocationPolicyId": {
+      "value": "%AllowedLocationPolicyId%"
+    },
+    "DepartmentNumber": {
+      "value": "%DepartmentNumber%"
     },
     "deployKV": {
       "value": %deployKV%

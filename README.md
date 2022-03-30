@@ -14,6 +14,20 @@ Edit config.json with `code .\config.json' and adjust parameters as required.
 
 Save the file and exit VSCode.
 
+Note about policy definitions:
+
+In the standard configuration file, the following parameters are pre-configured:
+
+  `"PBMMPolicyID":"4c4a5f27-de81-430b-b4e5-9cbd50595a87",`
+
+  `"AllowedLocationPolicyId": "e56962a6-4747-49cd-b67b-bf8b01975c4c",`
+
+These are the default GUIDs for the "Canada Federal PBMM" Initiative and for the "Allowed Location" policy, respectively. If any other custom Initiative or Policy are used, please update the file as required. To list Initiative definitions and policies, use, respectively:
+
+`Get-AzPolicySetDefinition | Select-Object Name -ExpandProperty Properties | select Name,DisplayName | Out-GridView`
+
+`Get-AzPolicyDefinition | Select-Object Name -ExpandProperty Properties | select Name,DisplayName | Out-GridView`
+
 ## Deployment
 
 If the deployment is being done using the Azure Cloud Shell, the currentuserUPN parameter below refers to the user logged in. This is required when using the cloud shell.
@@ -35,3 +49,15 @@ Alternatively, these parameters can be used to leverage existing KeyVault and Lo
 `$existingWorkSpaceRG`: the resource group containing the Log Analytics Workspace above.
 
 `$skipDeployment`: the setup script will run everything but the Azure Resources deployment (for debug/testing only)
+
+## How it works
+
+1 - The solution is deployment from the Azure Portal's cloud shell. After cloning the repository, some configuration may be done to the provided `config.json` file. Once triggered, the setup will deploy all the required components.
+
+2 - Azure Automation will trigger the main runbook every hour. It will fetch information from multiple sources (AAD, Azure Resources, Storage Account).
+
+3 - The data is then stored into the Log Analytics workspace.
+
+4 - The data summary and details can be visualized using the provided Guardrails workbook.
+
+![Setup and Operation](./SolutionDiagram.png "Setup and Operation")
